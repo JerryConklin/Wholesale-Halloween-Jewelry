@@ -1,188 +1,517 @@
-import {Await, useLoaderData, Link} from 'react-router';
-import {Suspense} from 'react';
-import {Image} from '@shopify/hydrogen';
-import {ProductItem} from '~/components/ProductItem';
-import {MockShopNotice} from '~/components/MockShopNotice';
-
-/**
- * @type {Route.MetaFunction}
- */
 export const meta = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [
+    {title: 'Wholesale Halloween Jewelry | 1,000+ Styles'},
+    {
+      name: 'description',
+      content:
+        'Wholesale Halloween jewelry with over 1,000 styles available. Earrings, necklaces, bracelets, pins, keychains, hair accessories and wholesale assortments. In stock and ready to ship.',
+    },
+  ];
 };
 
-/**
- * @param {Route.LoaderArgs} args
- */
-export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
-}
-
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- * @param {Route.LoaderArgs}
- */
-async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
-    context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
-
-  return {
-    isShopLinked: Boolean(context.env.PUBLIC_STORE_DOMAIN),
-    featuredCollection: collections.nodes[0],
-  };
-}
-
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- * @param {Route.LoaderArgs}
- */
-function loadDeferredData({context}) {
-  const recommendedProducts = context.storefront
-    .query(RECOMMENDED_PRODUCTS_QUERY)
-    .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
-      console.error(error);
-      return null;
-    });
-
-  return {
-    recommendedProducts,
-  };
-}
-
 export default function Homepage() {
-  /** @type {LoaderReturnData} */
-  const data = useLoaderData();
   return (
-    <div className="home">
-      {data.isShopLinked ? null : <MockShopNotice />}
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
-    </div>
-  );
-}
-
-/**
- * @param {{
- *   collection: FeaturedCollectionFragment;
- * }}
- */
-function FeaturedCollection({collection}) {
-  if (!collection) return null;
-  const image = collection?.image;
-  return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
+    <main
+      style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '30px 20px',
+        fontFamily: 'Arial, sans-serif',
+      }}
     >
-      {image && (
-        <div className="featured-collection-image">
-          <Image
-            data={image}
-            sizes="100vw"
-            alt={image.altText || collection.title}
-          />
+      <section
+        style={{
+          textAlign: 'center',
+          padding: '60px 20px',
+          background: '#111',
+          color: 'white',
+          borderRadius: '12px',
+        }}
+      >
+        <div
+          style={{
+            color: '#ff8c00',
+            fontWeight: 'bold',
+            fontSize: '18px',
+            marginBottom: '12px',
+          }}
+        >
+          WHOLESALE ONLY
         </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
+
+        <h1 style={{fontSize: '48px', margin: '0 0 20px'}}>
+          Wholesale Halloween Jewelry
+        </h1>
+
+        <p
+          style={{
+            fontSize: '23px',
+            maxWidth: '850px',
+            margin: '0 auto 20px',
+          }}
+        >
+          Over 1,000 Halloween jewelry styles available and ready to ship.
+        </p>
+
+        <p style={{fontSize: '18px', lineHeight: '1.6'}}>
+          Earrings • Necklaces • Bracelets • Brooch Pins • Keychains • Hair
+          Accessories • Assortments
+        </p>
+
+        <a
+          href="#assortments"
+          style={{
+            display: 'inline-block',
+            marginTop: '20px',
+            padding: '15px 28px',
+            background: '#ff8c00',
+            color: '#111',
+            textDecoration: 'none',
+            fontWeight: 'bold',
+            borderRadius: '6px',
+          }}
+        >
+          SHOP WHOLESALE ASSORTMENTS
+        </a>
+      </section>
+
+      <section
+        id="assortments"
+        style={{
+          padding: '55px 0',
+          textAlign: 'center',
+        }}
+      >
+        <h2 style={{fontSize: '34px'}}>Wholesale Assortments</h2>
+
+        <p
+          style={{
+            fontSize: '19px',
+            maxWidth: '850px',
+            margin: '0 auto 35px',
+            lineHeight: '1.6',
+          }}
+        >
+          Our assortments are designed for retailers who want variety without
+          having to select hundreds of individual styles. Assortments are
+          balanced by category based on sales demand, with a larger selection
+          of our strongest-selling Halloween earrings.
+        </p>
+
+        <div
+          style={{
+            border: '2px solid #ff8c00',
+            borderRadius: '12px',
+            padding: '35px',
+            maxWidth: '750px',
+            margin: '0 auto',
+          }}
+        >
+          <h2 style={{fontSize: '30px', marginTop: 0}}>
+            100 Dozen Halloween Jewelry Assortment
+          </h2>
+
+          <p style={{fontSize: '22px'}}>
+            <strong>1,200 Pieces</strong>
+          </p>
+
+          <p style={{fontSize: '22px'}}>
+            <strong>$24 per dozen</strong>
+          </p>
+
+          <p style={{fontSize: '26px'}}>
+            <strong>$2.00 per piece</strong>
+          </p>
+<p style={{fontSize: '22px', margin: '8px 0'}}>
+  <strong>Complete Assortment: $2,400</strong>
+</p>
+          <p style={{fontSize: '20px', fontWeight: 'bold', color: '#ff8c00'}}>
+    Includes a FREE floor display.
+</p>
+<p style={{fontSize: '18px', lineHeight: '1.7'}}>
+  Professionally selected from over 1,000 available Halloween jewelry styles
+  to create a strong-selling retail assortment. Each assortment is balanced
+  based on sell-through, with more of our strongest-selling category,
+  Halloween earrings, plus necklaces, bracelets, brooch pins, keychains,
+  hair accessories, and more.
+</p>
+<a
+  href="#"
+  style={{
+    display: 'inline-block',
+    marginTop: '20px',
+    padding: '16px 30px',
+    backgroundColor: '#ff8c00',
+    color: 'white',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    textDecoration: 'none',
+    borderRadius: '8px',
+  }}
+>
+  ORDER THE 100 DOZEN ASSORTMENT — $2,400
+</a>
+        </div>
+      </section>
+<section
+  style={{
+    padding: '50px 25px',
+    textAlign: 'center',
+  }}
+>
+  <h2>Choose Your Wholesale Quantity</h2>
+
+  <p style={{fontSize: '18px', lineHeight: '1.7'}}>
+    Choose the quantity and product categories that work best for your store.
+Larger orders receive automatic volume pricing.
+  </p>
+<div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
+    gap: '18px',
+    marginTop: '30px',
+  }}
+>
+  <div style={{border: '2px solid #ddd', borderRadius: '12px', padding: '25px 15px'}}>
+    <strong style={{fontSize: '22px'}}>1-24 Dozen</strong>
+<div style={{fontSize: '20px', marginTop: '8px'}}>12–288 Pieces</div>
+    <div style={{fontSize: '26px', marginTop: '10px'}}>$30 per dozen</div>
+  </div>
+
+  <div style={{border: '2px solid #ddd', borderRadius: '12px', padding: '25px 15px'}}>
+    <strong style={{fontSize: '22px'}}>25-49 Dozen</strong>
+<div style={{fontSize: '20px', marginTop: '8px'}}>300–588 Pieces</div>
+    <div style={{fontSize: '26px', marginTop: '10px'}}>$27 per dozen</div>
+  </div>
+
+  <div style={{border: '2px solid #ff8c00', borderRadius: '12px', padding: '25px 15px'}}>
+    <strong style={{fontSize: '22px'}}>50-99 Dozen</strong>
+<div style={{fontSize: '20px', marginTop: '8px'}}>600–1,188 Pieces</div>
+    <div style={{fontSize: '26px', marginTop: '10px'}}>$24 per dozen</div>
+    <div style={{fontSize: '18px', marginTop: '10px'}}><strong>FREE Counter Display Included</strong></div>
+  </div>
+
+  <div style={{background: '#111', color: 'white', border: '2px solid #ff8c00', borderRadius: '12px', padding: '25px 15px'}}>
+  <strong style={{fontSize: '22px'}}>100+ Dozen</strong>
+  <div style={{fontSize: '20px', marginTop: '8px'}}>1,200+ Pieces</div>
+  <div style={{fontSize: '30px', marginTop: '8px'}}><strong>$24 per dozen</strong></div>
+  <div style={{fontSize: '22px', marginTop: '8px'}}><strong>$2.00 per piece</strong></div>
+  <div style={{fontSize: '18px', marginTop: '10px', color: '#ff8c00'}}><strong>FREE Floor Display Included</strong></div>
+</div>
+
+</div>
+
+  
+</section>
+
+<section
+  style={{
+    padding: '50px 25px',
+    textAlign: 'center',
+  }}
+>
+  <h2>Shop Wholesale Halloween Jewelry</h2>
+
+  <p style={{fontSize: '18px', lineHeight: '1.7'}}>
+    Shop our huge selection of wholesale Halloween jewelry by category.
+  </p>
+<div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '22px',
+    marginTop: '30px',
+  }}
+>
+<div
+  style={{
+    border: '2px solid #ff8c00',
+    borderRadius: '12px',
+    padding: '25px',
+    maxWidth: '300px',
+    margin: '30px auto 0',
+  }}
+>
+<img
+  src="/halloween-earrings.png"
+  alt="Wholesale Halloween Earrings"
+  style={{
+    width: '100%',
+    height: '250px',
+    objectFit: 'contain',
+    borderRadius: '8px',
+    marginBottom: '20px',
+  }}
+/>
+  <h3 style={{fontSize: '22px', marginTop: 0}}>
+    Halloween Earrings
+  </h3>
+
+  <p style={{fontSize: '17px'}}>
+    Huge selection of styles ready to ship
+  </p>
+
+  <a
+    href="#"
+    style={{
+      display: 'inline-block',
+      marginTop: '10px',
+      padding: '12px 22px',
+      backgroundColor: '#ff8c00',
+      color: 'white',
+      fontWeight: 'bold',
+      textDecoration: 'none',
+      borderRadius: '8px',
+    }}
+  >
+    SHOP EARRINGS
+  </a>
+</div>
+<div
+  style={{
+    border: '2px solid #ff8c00',
+    borderRadius: '12px',
+    padding: '25px',
+    maxWidth: '300px',
+    margin: '30px auto 0',
+  }}
+>
+  <img
+    src="/halloween-necklaces.PNG"
+    alt="Wholesale Halloween Necklaces"
+    style={{
+      width: '100%',
+      height: '250px',
+      objectFit: 'contain',
+      borderRadius: '8px',
+      marginBottom: '20px',
+    }}
+  />
+
+  <h3 style={{fontSize: '22px', marginTop: 0}}>
+    Halloween Necklaces
+  </h3>
+
+  <p style={{fontSize: '17px'}}>
+    Huge selection of styles ready to ship
+  </p>
+
+  <a
+    href="#"
+    style={{
+      display: 'inline-block',
+      marginTop: '10px',
+      padding: '12px 22px',
+      backgroundColor: '#ff8c00',
+      color: 'white',
+      fontWeight: 'bold',
+      textDecoration: 'none',
+      borderRadius: '8px',
+    }}
+  >
+    SHOP NECKLACES
+  </a>
+</div>
+<div
+  style={{
+    border: '2px solid #ff8c00',
+    borderRadius: '12px',
+    padding: '25px',
+    maxWidth: '300px',
+    margin: '30px auto 0',
+  }}
+>
+  <img
+    src="/halloween-bracelet.PNG"
+    alt="Wholesale Halloween Bracelets"
+    style={{
+      width: '100%',
+      height: '250px',
+      objectFit: 'contain',
+      borderRadius: '8px',
+      marginBottom: '20px',
+    }}
+  />
+
+  <h3 style={{fontSize: '22px', marginTop: 0}}>
+    Halloween Bracelets
+  </h3>
+
+  <p style={{fontSize: '17px'}}>
+    Huge selection of styles ready to ship
+  </p>
+
+  <a
+    href="#"
+    style={{
+      display: 'inline-block',
+      marginTop: '10px',
+      padding: '12px 22px',
+      backgroundColor: '#ff8c00',
+      color: 'white',
+      fontWeight: 'bold',
+      textDecoration: 'none',
+      borderRadius: '8px',
+    }}
+  >
+    SHOP BRACELETS
+  </a>
+</div>
+<div
+  style={{
+    border: '2px solid #ff8c00',
+    borderRadius: '12px',
+    padding: '25px',
+    maxWidth: '300px',
+    margin: '30px auto 0',
+  }}
+>
+  <img
+    src="/halloween-brooch-pin.PNG"
+    alt="Wholesale Halloween Brooch Pins"
+    style={{
+      width: '100%',
+      height: '250px',
+      objectFit: 'contain',
+      borderRadius: '8px',
+      marginBottom: '20px',
+    }}
+  />
+
+  <h3 style={{fontSize: '22px', marginTop: 0}}>
+    Halloween Brooch Pins
+  </h3>
+
+  <p style={{fontSize: '17px'}}>
+    Huge selection of styles ready to ship
+  </p>
+
+  <a
+    href="#"
+    style={{
+      display: 'inline-block',
+      marginTop: '10px',
+      padding: '12px 22px',
+      backgroundColor: '#ff8c00',
+      color: 'white',
+      fontWeight: 'bold',
+      textDecoration: 'none',
+      borderRadius: '8px',
+    }}
+  >
+    SHOP BROOCH PINS
+  </a>
+</div>
+<div
+  style={{
+    border: '2px solid #ff8c00',
+    borderRadius: '12px',
+    padding: '25px',
+    maxWidth: '300px',
+    margin: '30px auto 0',
+  }}
+>
+  <img
+    src="/halloween-keychains.PNG"
+    alt="Wholesale Halloween Keychains"
+    style={{
+      width: '100%',
+      height: '250px',
+      objectFit: 'contain',
+      borderRadius: '8px',
+      marginBottom: '20px',
+    }}
+  />
+
+  <h3 style={{fontSize: '22px', marginTop: 0}}>
+    Halloween Keychains
+  </h3>
+
+  <p style={{fontSize: '17px'}}>
+    Huge selection of styles ready to ship
+  </p>
+
+  <a
+    href="#"
+    style={{
+      display: 'inline-block',
+      marginTop: '10px',
+      padding: '12px 22px',
+      backgroundColor: '#ff8c00',
+      color: 'white',
+      fontWeight: 'bold',
+      textDecoration: 'none',
+      borderRadius: '8px',
+    }}
+  >
+    SHOP KEYCHAINS
+  </a>
+</div>
+<div
+  style={{
+    border: '2px solid #ff8c00',
+    borderRadius: '12px',
+    padding: '25px',
+    maxWidth: '300px',
+    margin: '30px auto 0',
+  }}
+>
+  <img
+    src="/halloween-hair-accessories.PNG"
+    alt="Wholesale Halloween Hair Accessories"
+    style={{
+      width: '100%',
+      height: '250px',
+      objectFit: 'contain',
+      borderRadius: '8px',
+      marginBottom: '20px',
+    }}
+  />
+
+  <h3 style={{fontSize: '22px', marginTop: 0}}>
+    Halloween Hair Accessories
+  </h3>
+
+  <p style={{fontSize: '17px'}}>
+    Huge selection of styles ready to ship
+  </p>
+
+  <a
+    href="#"
+    style={{
+      display: 'inline-block',
+      marginTop: '10px',
+      padding: '12px 22px',
+      backgroundColor: '#ff8c00',
+      color: 'white',
+      fontWeight: 'bold',
+      textDecoration: 'none',
+      borderRadius: '8px',
+    }}
+  >
+    SHOP HAIR ACCESSORIES
+  </a>
+</div>
+</div>
+</section>      
+
+<section
+        style={{
+          background: '#f4f4f4',
+          padding: '40px 25px',
+          borderRadius: '12px',
+          textAlign: 'center',
+        }}
+      >
+        <h2>Built for Retailers</h2>
+
+        <p style={{fontSize: '18px', lineHeight: '1.8'}}>
+          Huge selection • Wholesale quantities • Merchandise ready to ship •
+          Retail-friendly assortments • More than 40 years in the wholesale
+          jewelry business
+        </p>
+      </section>
+    </main>
   );
 }
-
-/**
- * @param {{
- *   products: Promise<RecommendedProductsQuery | null>;
- * }}
- */
-function RecommendedProducts({products}) {
-  return (
-    <section
-      className="recommended-products"
-      aria-labelledby="recommended-products"
-    >
-      <h2 id="recommended-products">Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {(response) => (
-            <div className="recommended-products-grid">
-              {response
-                ? response.products.nodes.map((product) => (
-                    <ProductItem key={product.id} product={product} />
-                  ))
-                : null}
-            </div>
-          )}
-        </Await>
-      </Suspense>
-      <br />
-    </section>
-  );
-}
-
-const FEATURED_COLLECTION_QUERY = `#graphql
-  fragment FeaturedCollection on Collection {
-    id
-    title
-    image {
-      id
-      url
-      altText
-      width
-      height
-    }
-    handle
-  }
-  query FeaturedCollection($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...FeaturedCollection
-      }
-    }
-  }
-`;
-
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-  fragment RecommendedProduct on Product {
-    id
-    title
-    handle
-    priceRange {
-      minVariantPrice {
-        amount
-        currencyCode
-      }
-    }
-    featuredImage {
-      id
-      url
-      altText
-      width
-      height
-    }
-  }
-  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
-    @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
-      nodes {
-        ...RecommendedProduct
-      }
-    }
-  }
-`;
-
-/** @typedef {import('./+types/_index').Route} Route */
-/** @typedef {import('storefrontapi.generated').FeaturedCollectionFragment} FeaturedCollectionFragment */
-/** @typedef {import('storefrontapi.generated').RecommendedProductsQuery} RecommendedProductsQuery */
-/** @typedef {ReturnType<typeof useLoaderData<typeof loader>>} LoaderReturnData */

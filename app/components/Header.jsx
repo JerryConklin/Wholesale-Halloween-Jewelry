@@ -11,7 +11,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   return (
     <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+        <strong>Wholesale Halloween Jewelry</strong>
       </NavLink>
       <HeaderMenu
         menu={menu}
@@ -54,7 +54,7 @@ export function HeaderMenu({
           Home
         </NavLink>
       )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+      {(FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
         // if the url is internal, we strip the domain
@@ -175,7 +175,7 @@ const FALLBACK_HEADER_MENU = {
       id: 'gid://shopify/MenuItem/461609500728',
       resourceId: null,
       tags: [],
-      title: 'Collections',
+      title: 'Wholesale Assortments',
       type: 'HTTP',
       url: '/collections',
       items: [],
@@ -184,30 +184,66 @@ const FALLBACK_HEADER_MENU = {
       id: 'gid://shopify/MenuItem/461609533496',
       resourceId: null,
       tags: [],
-      title: 'Blog',
+      title: 'Halloween Earrings',
       type: 'HTTP',
-      url: '/blogs/journal',
+      url: '/collections/halloween-earrings',
       items: [],
     },
     {
       id: 'gid://shopify/MenuItem/461609566264',
       resourceId: null,
       tags: [],
-      title: 'Policies',
+      title: 'Halloween Necklaces',
       type: 'HTTP',
-      url: '/policies',
+      url: '/collections/halloween-necklaces',
       items: [],
     },
     {
       id: 'gid://shopify/MenuItem/461609599032',
       resourceId: 'gid://shopify/Page/92591030328',
       tags: [],
-      title: 'About',
+      title: 'Halloween Bracelets',
       type: 'PAGE',
-      url: '/pages/about',
+      url: '/collections/halloween-bracelets',
       items: [],
     },
-  ],
+{
+      id: 'gid://shopify/MenuItem/461609599032',
+      resourceId: 'gid://shopify/Page/92591030328',
+      tags: [],
+      title: 'Halloween Brooch Pins',
+      type: 'PAGE',
+      url: '/collections/halloween-brooch-pins',
+      items: [],
+    },
+  {
+      id: 'gid://shopify/MenuItem/461609599032',
+      resourceId: 'gid://shopify/Page/92591030328',
+      tags: [],
+      title: 'Halloween Keychains',
+      type: 'PAGE',
+      url: '/collections/halloween-keychains',
+      items: [],
+    },
+{
+      id: 'gid://shopify/MenuItem/461609599032',
+      resourceId: 'gid://shopify/Page/92591030328',
+      tags: [],
+      title: 'Halloween Hair Accessories',
+      type: 'PAGE',
+      url: '/collections/halloween-hair-accessories',
+      items: [],
+    },
+{
+      id: 'gid://shopify/MenuItem/461609599032',
+      resourceId: 'gid://shopify/Page/92591030328',
+      tags: [],
+      title: 'Mixed Halloween Assortments',
+      type: 'PAGE',
+      url: '/collections/mixed-halloween-assortments',
+      items: [],
+    }
+],
 };
 
 /**
